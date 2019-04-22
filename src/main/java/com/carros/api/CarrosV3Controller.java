@@ -46,9 +46,11 @@ public class CarrosV3Controller {
     public ResponseEntity post(@RequestBody Carro carro) {
 
         try {
-            return service.save(carro)
-                    .map(c -> ResponseEntity.created(getUri(c)).build())
-                    .orElse(ResponseEntity.badRequest().build());
+            CarroDTO c = service.save(carro);
+
+            return c != null ?
+                    ResponseEntity.created(getUri(c)).build() :
+                    ResponseEntity.badRequest().build();
 
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();

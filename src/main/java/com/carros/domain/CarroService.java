@@ -28,19 +28,18 @@ public class CarroService {
         return rep.findByTipo(tipo).stream().map(CarroDTO::new).collect(Collectors.toList());
     }
 
-    public Optional<CarroDTO> save(Carro carro) {
+    public CarroDTO save(Carro carro) {
         if (carro.getId() != null) {
-//            throw new RuntimeException("Erro ao inserir");
-            return null;
+            throw new RuntimeException("Erro ao inserir");
         }
         Carro c = rep.save(carro);
-        return Optional.ofNullable(c).map(CarroDTO::new);
+        return new CarroDTO(c);
     }
 
     public CarroDTO update(Carro carro, Long id) {
         carro.setId(id);
 
-        return getCarroById(id).map(c -> save(carro).get()).orElse(null);
+        return getCarroById(id).map(c -> save(carro)).orElse(null);
     }
 
     public boolean delete(Long id) {
