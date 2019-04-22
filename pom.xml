@@ -53,7 +53,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- lombok -->
+        <!-- Lombok: https://projectlombok.org/ -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -61,6 +61,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Model Mapper: http://modelmapper.org/ -->
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>2.3.0</version>
+        </dependency>
 
     </dependencies>
 

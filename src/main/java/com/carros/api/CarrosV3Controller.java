@@ -3,6 +3,7 @@ package com.carros.api;
 import com.carros.domain.Carro;
 import com.carros.domain.CarroService;
 import com.carros.domain.dto.CarroDTO;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,63 +21,61 @@ public class CarrosV3Controller {
 
     @GetMapping()
     public ResponseEntity get() {
-        Iterable<Carro> carros = service.getCarros();
-        List<CarroDTO> list = CarroDTO.toList(carros);
-        return ResponseEntity.ok(list);
+        List<CarroDTO> carros = service.getCarros();
+        return ResponseEntity.ok(carros);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable("id") Long id) {
-        Optional<Carro> carro = service.getCarroById(id);
+        Optional<CarroDTO> carro = service.getCarroById(id);
 
         return carro
-                .map(c -> ResponseEntity.ok(new CarroDTO(c)))
+                .map(c -> ResponseEntity.ok(carro))
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/tipo/{tipo}")
     public ResponseEntity getCarrosByTipo(@PathVariable("tipo") String tipo) {
-        List<Carro> carros = service.getCarrosByTipo(tipo);
-        List<CarroDTO> list = CarroDTO.toList(carros);
-
-        return list.isEmpty() ?
+        List<CarroDTO> carros = service.getCarrosByTipo(tipo);
+        return carros.isEmpty() ?
                 ResponseEntity.noContent().build() :
-                ResponseEntity.ok(list);
+                ResponseEntity.ok(carros);
     }
 
     @PostMapping
     public ResponseEntity post(@RequestBody Carro carro) {
 
-        carro.setId(null);
+        try {
+            return service.save(carro)
+                    .map(c -> ResponseEntity.created(getUri(c)).build())
+                    .orElse(ResponseEntity.badRequest().build());
 
-        Carro c = service.save(carro);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
 
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+    }
+
+    private URI getUri(CarroDTO c) {
+        return ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(c.getId()).toUri();
-
-        return ResponseEntity.created(location).build();
     }
 
     @PutMapping("/{id}")
     public ResponseEntity put(@PathVariable("id") Long id, @RequestBody Carro carro) {
 
-        carro.setId(id);
+        CarroDTO c = service.update(carro, id);
 
-        return service.getCarroById(id)
-                .map(c -> ResponseEntity.ok(new CarroDTO(service.save(carro))))
-                .orElse(ResponseEntity.notFound().build());
+        return c != null ?
+                ResponseEntity.ok().build() :
+                ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable("id") Long id) {
 
-        Optional<Carro> carro = service.getCarroById(id);
-
-        if(carro.isPresent()) {
-            service.delete(id);
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return service.delete(id) ?
+                ResponseEntity.ok().build() :
+                ResponseEntity.notFound().build();
     }
 }

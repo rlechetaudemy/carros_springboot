@@ -1,14 +1,16 @@
 package com.carros.domain.dto;
 
 import com.carros.domain.Carro;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 public class CarroDTO {
-    public Long id;
-    public String nome;
-    public String tipo;
+    private Long id;
+    private String nome;
+    private String tipo;
 
     public CarroDTO(Carro carro) {
         this.id = carro.getId();
