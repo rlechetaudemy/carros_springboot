@@ -3,7 +3,6 @@ package com.carros.api;
 import com.carros.domain.Carro;
 import com.carros.domain.CarroService;
 import com.carros.domain.dto.CarroDTO;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +13,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v3/carros")
-public class CarrosV3Controller {
+@RequestMapping("/api/v1/carros")
+public class CarrosController {
     @Autowired
     private CarroService service;
 
