@@ -30,7 +30,7 @@ public class CarroService {
 
     public CarroDTO save(Carro carro) {
         if (carro.getId() != null) {
-            throw new RuntimeException("Erro ao inserir");
+            throw new IllegalArgumentException("Erro ao inserir");
         }
         Carro c = rep.save(carro);
         return CarroDTO.create(c);
