@@ -44,9 +44,7 @@ public class CarroService {
 
     public boolean delete(Long id) {
 
-        Optional<CarroDTO> carro = getCarroById(id);
-
-        return carro.map(c -> {
+        return getCarroById(id).map(c -> {
             rep.deleteById(id);
             return true;
         }).orElse(false);
