@@ -29,13 +29,13 @@ public class CarroService {
         return rep.findByTipo(tipo).stream().map(CarroDTO::create).collect(Collectors.toList());
     }
 
-    public Carro insert(Carro carro) {
+    public CarroDTO insert(Carro carro) {
         Assert.isNull(carro.getId(),"Não foi possível inserir o registro");
 
-        return rep.save(carro);
+        return CarroDTO.create(rep.save(carro));
     }
 
-    public Carro update(Carro carro, Long id) {
+    public CarroDTO update(Carro carro, Long id) {
         Assert.notNull(id,"Não foi possível atualizar o registro");
 
         // Busca o carro no banco de dados
@@ -50,16 +50,18 @@ public class CarroService {
             // Atualiza o carro
             rep.save(db);
 
-            return db;
+            return CarroDTO.create(db);
         } else {
             return null;
             //throw new RuntimeException("Não foi possível atualizar o registro");
         }
     }
 
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         if(getCarroById(id).isPresent()) {
             rep.deleteById(id);
+            return true;
         }
+        return false;
     }
 }
