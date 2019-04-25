@@ -16,16 +16,5 @@ public class CarrosApplicationTests {
 
     @Test
     public void contextLoads() {
-
-//        Carro c = new Carro();
-//        c.setNome("Novo carro");
-//        c.setTipo("esportivos");
-//
-//        service.save(c);
-//
-//        Long id = c.getId();
-//
-//        assertNotNull(id);
     }
-
 }
