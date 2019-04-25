@@ -45,10 +45,10 @@ public class CarrosController {
     public ResponseEntity post(@RequestBody Carro carro) {
 
         try {
-            CarroDTO c = service.save(carro);
+            CarroDTO c = service.insert(carro);
 
             return c != null ?
-                    ResponseEntity.created(getUri(c)).build() :
+                    ResponseEntity.created(getUri(c.getId())).build() :
                     ResponseEntity.badRequest().build();
 
         } catch (Exception e) {
@@ -57,9 +57,9 @@ public class CarrosController {
 
     }
 
-    private URI getUri(CarroDTO c) {
+    private URI getUri(Long id) {
         return ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(c.getId()).toUri();
+                .buildAndExpand(id).toUri();
     }
 
     @PutMapping("/{id}")
