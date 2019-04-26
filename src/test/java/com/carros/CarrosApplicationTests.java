@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
 import java.util.Optional;
 
 import static junit.framework.TestCase.*;
@@ -21,10 +22,10 @@ public class CarrosApplicationTests {
     private CarroService service;
 
     @Test
-    public void test1() {
+    public void testSave() {
 
         Carro carro = new Carro();
-        carro.setNome("Ferrari");
+        carro.setNome("Porshe");
         carro.setTipo("esportivos");
 
         CarroDTO c = service.insert(carro);
@@ -39,7 +40,7 @@ public class CarrosApplicationTests {
         assertTrue(op.isPresent());
 
         c = op.get();
-        assertEquals("Ferrari",c.getNome());
+        assertEquals("Porshe",c.getNome());
         assertEquals("esportivos",c.getTipo());
 
         // Deletar o objeto
@@ -50,6 +51,32 @@ public class CarrosApplicationTests {
     }
 
     @Test
-    public void test2() {
+    public void testLista() {
+
+        List<CarroDTO> carros = service.getCarros();
+
+        assertEquals(30, carros.size());
+    }
+
+    @Test
+    public void testListaPorTipo() {
+
+        assertEquals(10, service.getCarrosByTipo("classicos").size());
+        assertEquals(10, service.getCarrosByTipo("esportivos").size());
+        assertEquals(10, service.getCarrosByTipo("luxo").size());
+
+        assertEquals(0, service.getCarrosByTipo("x").size());
+    }
+
+    @Test
+    public void testGet() {
+
+        Optional<CarroDTO> op = service.getCarroById(11L);
+
+        assertTrue(op.isPresent());
+
+        CarroDTO c = op.get();
+
+        assertEquals("Ferrari FF", c.getNome());
     }
 }
