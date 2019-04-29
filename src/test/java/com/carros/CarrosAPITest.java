@@ -93,7 +93,7 @@ public class CarrosAPITest {
     public void testGetOk() {
 
         ResponseEntity<CarroDTO> response = getCarro("/api/v1/carros/11");
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
+            assertEquals(response.getStatusCode(), HttpStatus.OK);
 
         CarroDTO c = response.getBody();
         assertEquals("Ferrari FF", c.getNome());
