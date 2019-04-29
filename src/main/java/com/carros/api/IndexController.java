@@ -10,6 +10,6 @@ public class IndexController {
 
     @GetMapping()
     public String get() {
-        return "API dos Carros.github";
+        return "API dos Carros.heroku";
     }
 }
