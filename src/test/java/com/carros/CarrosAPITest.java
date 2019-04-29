@@ -83,7 +83,7 @@ public class CarrosAPITest {
 
         assertEquals(10, getCarros("/api/v1/carros/tipo/classicos").getBody().size());
         assertEquals(10, getCarros("/api/v1/carros/tipo/esportivos").getBody().size());
-        assertEquals(10, getCarros("/api/v1/carros/tipo/cluxo").getBody().size());
+        assertEquals(10, getCarros("/api/v1/carros/tipo/luxo").getBody().size());
 
         assertEquals(HttpStatus.NO_CONTENT, getCarros("/api/v1/carros/tipo/xxx").getStatusCode());
     }
