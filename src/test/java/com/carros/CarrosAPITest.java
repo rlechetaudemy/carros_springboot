@@ -54,6 +54,7 @@ public class CarrosAPITest {
         ResponseEntity response = rest.postForEntity("/api/v1/carros", carro, null);
         System.out.println(response);
 
+        // Verifica se criou
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
 
         // Buscar o objeto
