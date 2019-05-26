@@ -1,6 +1,7 @@
 package com.carros.domain;
 
 import com.carros.domain.dto.CarroDTO;
+import com.carros.domain.exception.ParametrosInvalidosException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -30,7 +31,10 @@ public class CarroService {
     }
 
     public CarroDTO insert(Carro carro) {
-        Assert.isNull(carro.getId(),"Não foi possível inserir o registro");
+        //Assert.isNull(carro.getId(),"Não foi possível inserir o registro");
+        if(carro.getId() != null) {
+            throw new ParametrosInvalidosException("Não foi possível inserir o registro!");
+        }
 
         return CarroDTO.create(rep.save(carro));
     }

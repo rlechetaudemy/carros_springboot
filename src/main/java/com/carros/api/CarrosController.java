@@ -5,6 +5,7 @@ import com.carros.domain.CarroService;
 import com.carros.domain.dto.CarroDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -44,14 +45,10 @@ public class CarrosController {
     @PostMapping
     public ResponseEntity post(@RequestBody Carro carro) {
 
-        try {
-            CarroDTO c = service.insert(carro);
+        CarroDTO c = service.insert(carro);
 
-            URI location = getUri(c.getId());
-            return ResponseEntity.created(location).build();
-        } catch (Exception ex) {
-            return ResponseEntity.badRequest().build();
-        }
+        URI location = getUri(c.getId());
+        return ResponseEntity.created(location).build();
     }
 
     private URI getUri(Long id) {
