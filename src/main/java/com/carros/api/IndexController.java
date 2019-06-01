@@ -14,6 +14,4 @@ public class IndexController {
     public String get() {
         return "API dos Carros";
     }
-
-
 }
