@@ -1,7 +1,7 @@
 package com.carros.domain.dto;
 
 import com.carros.domain.Carro;
-import lombok.*;
+import lombok.Data;
 import org.modelmapper.ModelMapper;
 
 @Data
