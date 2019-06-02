@@ -1,29 +1,24 @@
 package com.carros.api.security;
 
-import com.carros.domain.Role;
-import com.carros.domain.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service(value = "userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
-    @Autowired
-    private UserRepository userRepository;
-
     @Override
-    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        com.carros.domain.User user = userRepository.findUserByLogin(username);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-        if(user == null) {
-            throw new UsernameNotFoundException("login not found");
+        if(username.equals("user")) {
+            return User.withUsername(username).password(encoder.encode("user")).roles("USER").build();
+        } else if(username.equals("admin")) {
+            return User.withUsername(username).password(encoder.encode("admin")).roles("USER", "ADMIN").build();
         }
 
-        return user;
+        throw new UsernameNotFoundException("user not found");
     }
 }

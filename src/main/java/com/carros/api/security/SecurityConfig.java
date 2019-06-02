@@ -9,21 +9,17 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-//
+
     @Autowired
     @Qualifier("userDetailsService")
     private UserDetailsService userDetailsService;
@@ -32,16 +28,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http
-            .authorizeRequests()
-            .anyRequest().authenticated()
-            .and().httpBasic()
-            .and().csrf().disable();
+                .authorizeRequests()
+                .anyRequest().authenticated()
+                .and().httpBasic()
+                .and().csrf().disable();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-        auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        auth.userDetailsService(userDetailsService).passwordEncoder(encoder);
 
 //        auth
 //            .inMemoryAuthentication().passwordEncoder(encoder)
@@ -49,4 +47,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .and()
 //                .withUser("admin").password(encoder.encode("admin")).roles("USER", "ADMIN");
     }
+
 }
