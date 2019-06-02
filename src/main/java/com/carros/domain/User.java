@@ -3,26 +3,23 @@ package com.carros.domain;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
 
-@Data
 @Entity
+@Data
 public class User implements UserDetails {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String nome;
-    private String email;
     private String login;
     private String senha;
+    private String email;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
@@ -31,8 +28,8 @@ public class User implements UserDetails {
     private List<Role> roles;
 
     public static void main(String[] args) {
-        PasswordEncoder encoder = new BCryptPasswordEncoder();
-        System.out.print(encoder.encode("123"));
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        System.out.println(encoder.encode("123"));
     }
 
     @Override
