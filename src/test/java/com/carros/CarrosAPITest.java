@@ -1,6 +1,5 @@
 package com.carros;
 
-import com.carros.api.exception.ObjectNotFoundException;
 import com.carros.domain.Carro;
 import com.carros.domain.CarroService;
 import com.carros.domain.dto.CarroDTO;
@@ -17,7 +16,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
-import static junit.framework.TestCase.*;
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CarrosApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -51,7 +51,7 @@ public class CarrosAPITest {
         carro.setTipo("esportivos");
 
         // Insert
-        ResponseEntity response = rest.withBasicAuth("user","123").postForEntity("/api/v1/carros", carro, null);
+        ResponseEntity response = rest.withBasicAuth("admin","123").postForEntity("/api/v1/carros", carro, null);
         System.out.println(response);
 
         // Verifica se criou
@@ -69,12 +69,7 @@ public class CarrosAPITest {
         rest.withBasicAuth("user","123").delete(location);
 
         // Verificar se deletou
-        try {
-            getCarro(location);
-            fail("erro");
-        }catch (ObjectNotFoundException ex)  {
-            // Ok
-        }
+        assertEquals(HttpStatus.NOT_FOUND, getCarro(location).getStatusCode());
     }
 
     @Test
@@ -98,7 +93,7 @@ public class CarrosAPITest {
     public void testGetOk() {
 
         ResponseEntity<CarroDTO> response = getCarro("/api/v1/carros/11");
-            assertEquals(response.getStatusCode(), HttpStatus.OK);
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
 
         CarroDTO c = response.getBody();
         assertEquals("Ferrari FF", c.getNome());
@@ -106,11 +101,8 @@ public class CarrosAPITest {
 
     @Test
     public void testGetNotFound() {
-        try {
-            getCarro("/api/v1/carros/1100");
-            fail("carro nao encontrado");
-        } catch (ObjectNotFoundException ex) {
-            // Ok
-        }
+
+        ResponseEntity response = getCarro("/api/v1/carros/1100");
+        assertEquals(response.getStatusCode(), HttpStatus.NOT_FOUND);
     }
 }
