@@ -38,6 +38,7 @@ insert into user(id,nome,email,login,senha) values (3,'User','user@gmail.com','u
 
 insert into user_roles(user_id,role_id) values(1, 1);
 insert into user_roles(user_id,role_id) values(2, 2);
+insert into user_roles(user_id,role_id) values(3, 1);
 
 select * from role;
 select * from user;
