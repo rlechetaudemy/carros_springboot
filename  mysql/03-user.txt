@@ -1,0 +1,9 @@
+create table user (
+   id bigint not null auto_increment,
+    email varchar(255),
+    login varchar(255),
+    nome varchar(255),
+    senha varchar(255),
+    primary key (id)
+);
+
