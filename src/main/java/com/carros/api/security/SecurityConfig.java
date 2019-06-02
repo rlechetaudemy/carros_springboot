@@ -17,6 +17,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
@@ -30,10 +32,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http
-                .authorizeRequests()
-                .anyRequest().authenticated()
-                .and().httpBasic()
-                .and().csrf().disable();
+            .authorizeRequests()
+            .anyRequest().authenticated()
+            .and().httpBasic()
+            .and().csrf().disable();
     }
 
     @Override
