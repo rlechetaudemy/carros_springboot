@@ -5,12 +5,12 @@ import com.carros.domain.CarroService;
 import com.carros.domain.dto.CarroDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/carros")
@@ -26,11 +26,9 @@ public class CarrosController {
 
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable("id") Long id) {
-        Optional<CarroDTO> carro = service.getCarroById(id);
+        CarroDTO c = service.getCarroById(id);
 
-        return carro
-                .map(c -> ResponseEntity.ok(carro))
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(c);
     }
 
     @GetMapping("/tipo/{tipo}")
@@ -42,16 +40,13 @@ public class CarrosController {
     }
 
     @PostMapping
+    @Secured({ "ROLE_ADMIN" })
     public ResponseEntity post(@RequestBody Carro carro) {
 
-        try {
-            CarroDTO c = service.insert(carro);
+        CarroDTO c = service.insert(carro);
 
-            URI location = getUri(c.getId());
-            return ResponseEntity.created(location).build();
-        } catch (Exception ex) {
-            return ResponseEntity.badRequest().build();
-        }
+        URI location = getUri(c.getId());
+        return ResponseEntity.created(location).build();
     }
 
     private URI getUri(Long id) {
@@ -73,10 +68,8 @@ public class CarrosController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable("id") Long id) {
-        boolean ok = service.delete(id);
+        service.delete(id);
 
-        return ok ?
-                ResponseEntity.ok().build() :
-                ResponseEntity.notFound().build();
+        return ResponseEntity.ok().build();
     }
 }
