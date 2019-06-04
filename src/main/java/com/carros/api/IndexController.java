@@ -12,7 +12,7 @@ public class IndexController {
 
     @GetMapping()
     public String get() {
-        return "API dos Carros.";
+        return "API dos Carros - Heroku Git.";
     }
 
     @GetMapping("/userInfo")
