@@ -24,18 +24,20 @@ public class FirebaseStorageService {
 
     @PostConstruct
     private void init() throws IOException {
-        InputStream in =
-                FirebaseStorageService.class.getResourceAsStream("/serviceAccountKey.json");
+        if(FirebaseApp.getApps().isEmpty()) {
+            InputStream in =
+                    FirebaseStorageService.class.getResourceAsStream("/serviceAccountKey.json");
 
-        System.out.println(in);
+            System.out.println(in);
 
-        FirebaseOptions options = new FirebaseOptions.Builder()
-                .setCredentials(GoogleCredentials.fromStream(in))
-                .setStorageBucket("carros-3a13e.appspot.com")
-                .setDatabaseUrl("https://carros-3a13e.firebaseio.com")
-                .build();
+            FirebaseOptions options = new FirebaseOptions.Builder()
+                    .setCredentials(GoogleCredentials.fromStream(in))
+                    .setStorageBucket("carros-3a13e.appspot.com")
+                    .setDatabaseUrl("https://carros-3a13e.firebaseio.com")
+                    .build();
 
-        FirebaseApp.initializeApp(options);
+            FirebaseApp.initializeApp(options);
+        }
     }
 
     public String upload(UploadInput uploadInput) {
