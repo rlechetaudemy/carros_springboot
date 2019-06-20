@@ -2,8 +2,7 @@ package com.carros;
 
 import com.carros.api.upload.UploadInput;
 import com.carros.api.upload.UploadOutput;
-import com.carros.domain.CarroService;
-import com.carros.domain.upload.FirebaseStorageService;
+import com.carros.api.upload.FirebaseStorageService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +11,6 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.io.IOException;
-import java.net.URL;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
@@ -46,7 +42,7 @@ public class UploadTest {
         String url = service.upload(getUploadInput());
 
         // Faz o Get na URL
-        ResponseEntity<String> urlResponse = basicAuth().getForEntity(url, String.class);
+        ResponseEntity<String> urlResponse = rest.getForEntity(url, String.class);
         System.out.println(urlResponse);
         assertEquals(HttpStatus.OK, urlResponse.getStatusCode());
     }
@@ -70,7 +66,7 @@ public class UploadTest {
         String url = out.getUrl();
 
         // Faz o Get na URL
-        ResponseEntity<String> urlResponse = basicAuth().getForEntity(url, String.class);
+        ResponseEntity<String> urlResponse = rest.getForEntity(url, String.class);
         System.out.println(urlResponse);
         assertEquals(HttpStatus.OK, urlResponse.getStatusCode());
     }

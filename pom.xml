@@ -95,12 +95,7 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.google.firebase/firebase-storage -->
-        <dependency>
-            <groupId>com.google.firebase</groupId>
-            <artifactId>firebase-storage</artifactId>
-            <version>18.0.0</version>
-        </dependency>
+        <!-- Firebase Admin -->
         <dependency>
             <groupId>com.google.firebase</groupId>
             <artifactId>firebase-admin</artifactId>

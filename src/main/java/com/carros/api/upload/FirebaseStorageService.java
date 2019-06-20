@@ -1,22 +1,16 @@
-package com.carros.domain.upload;
+package com.carros.api.upload;
 
-import com.carros.api.upload.UploadInput;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.*;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.StorageClient;
-import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Base64;
-import java.util.concurrent.TimeUnit;
 
 //https://firebase.google.com/docs/storage/admin/start
 @Service
@@ -24,22 +18,24 @@ public class FirebaseStorageService {
 
     @PostConstruct
     private void init() throws IOException {
-        InputStream in =
-                FirebaseStorageService.class.getResourceAsStream("/serviceAccountKey.json");
 
-        System.out.println(in);
+        if (FirebaseApp.getApps().isEmpty()) {
+            InputStream in =
+                    FirebaseStorageService.class.getResourceAsStream("/serviceAccountKey.json");
 
-        FirebaseOptions options = new FirebaseOptions.Builder()
-                .setCredentials(GoogleCredentials.fromStream(in))
-                .setStorageBucket("carros-3a13e.appspot.com")
-                .setDatabaseUrl("https://carros-3a13e.firebaseio.com")
-                .build();
+            System.out.println(in);
 
-        FirebaseApp.initializeApp(options);
+            FirebaseOptions options = new FirebaseOptions.Builder()
+                    .setCredentials(GoogleCredentials.fromStream(in))
+                    .setStorageBucket("carros-3a13e.appspot.com")
+                    .setDatabaseUrl("https://carros-3a13e.firebaseio.com")
+                    .build();
+
+            FirebaseApp.initializeApp(options);
+        }
     }
 
     public String upload(UploadInput uploadInput) {
-
 
         Bucket bucket = StorageClient.getInstance().bucket();
         System.out.println(bucket);
@@ -70,3 +66,16 @@ public class FirebaseStorageService {
  }
  }
 */
+
+/**
+ service firebase.storage {
+ match /b/{bucket}/o {
+ match /{allPaths=**} {
+ allow write: if request.auth != null;
+ }
+ match /{allPaths=**} {
+ allow read;
+ }
+ }
+ }
+**/
