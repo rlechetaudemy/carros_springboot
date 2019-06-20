@@ -28,29 +28,26 @@ public class S3Helper {
 			metadata.setContentType(contentType);
 			metadata.setContentLength(bytes != null ? bytes.length : 0);
 		}
-		
+
+		PutObjectResult result;
+
 		if(bytes != null) {
-			conn.putObject(BUCKET, path, new ByteArrayInputStream(bytes), metadata);
+			result = conn.putObject(BUCKET, path, new ByteArrayInputStream(bytes), metadata);
 		} else {
-			conn.putObject(BUCKET, path, new ByteArrayInputStream(new byte[]{}),metadata);
+			result = conn.putObject(BUCKET, path, new ByteArrayInputStream(new byte[]{}),metadata);
 		}
 		
 		// Publico
 		conn.setObjectAcl(BUCKET, path, CannedAccessControlList.PublicRead);
-		
-		String url = getFileURL(dir,fileName);
-		return url;
-	}
 
-	public String getFileURL(String dir, String file) {
-		String url =  S3_SERVER + "/" + BUCKET + "/" +dir+"/"+file;
+		String url = conn.getUrl(BUCKET, path).toString();
+
 		return url;
 	}
 
 	public static void main(String[] args) throws IOException {
 		S3Helper s = new S3Helper();
-		String url = s.putFile("livrows", "nome.txt", "text/plan", "Ricardo Lecheta".getBytes());
+		String url = s.putFile("livrows", "nome.txt", "text/plan", "Ricardo Ninja Lecheta".getBytes());
 		System.out.println(url);
 	}
-
 }
