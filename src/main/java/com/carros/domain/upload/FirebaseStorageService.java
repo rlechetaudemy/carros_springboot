@@ -1,26 +1,31 @@
 package com.carros.domain.upload;
 
+import com.carros.api.upload.UploadInput;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.*;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.StorageClient;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.http.entity.ContentType;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Base64;
 import java.util.concurrent.TimeUnit;
 
 //https://firebase.google.com/docs/storage/admin/start
-class FirebaseService {
-    public static void main(String[] args) throws IOException {
+@Service
+public class FirebaseStorageService {
+
+    @PostConstruct
+    private void init() throws IOException {
         InputStream in =
-                FirebaseService.class.getResourceAsStream("/serviceAccountKey.json");
+                FirebaseStorageService.class.getResourceAsStream("/serviceAccountKey.json");
 
         System.out.println(in);
 
@@ -31,37 +36,28 @@ class FirebaseService {
                 .build();
 
         FirebaseApp.initializeApp(options);
+    }
+
+    public String upload(UploadInput uploadInput) {
+
 
         Bucket bucket = StorageClient.getInstance().bucket();
         System.out.println(bucket);
 
 //        Blob blob = bucket.create("nome.txt","Ricardo Ninja Lecheta".getBytes(), "text/html");
 
-        File f = new File("Ferrari_FF.png");
+        byte[] bytes = Base64.getDecoder().decode(uploadInput.getBase64());
 
-        byte[] bytes = IOUtils.toByteArray(new FileInputStream(f));
+        String fileName = uploadInput.getFileName();
+        Blob blob = bucket.create(fileName,bytes, uploadInput.getMimeType());
 
-        Blob blob = bucket.create(f.getName(),bytes, "image/png");
+        // Assina URL válida por N dias
+        //URL signedUrl = blob.signUrl(1, TimeUnit.DAYS);
 
-        URL signedUrl = blob.signUrl(365 * 10, TimeUnit.DAYS);
+        // Deixa URL pública
+        blob.createAcl(Acl.of(Acl.User.ofAllUsers(), Acl.Role.READER));
 
-        Acl acl = blob.createAcl(Acl.of(Acl.User.ofAllAuthenticatedUsers(), Acl.Role.READER));
-System.out.println(acl);
-
-        System.out.println(signedUrl);
-
-
-//        Storage storage = StorageOptions.getDefaultInstance().getService();
-//        BlobId blobId = BlobId.of(bucket.getName(), "blob_name");
-//        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
-//        Blob blob2 = storage.create(blobInfo, "Hello, Cloud Storage!".getBytes("UTF-8"));
-
-//        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-//
-//        System.out.println(new File(".").getAbsoluteFile());
-//        System.out.println(blob);
-//        System.out.println(blob.getMediaLink());
-
+        return String.format("https://storage.googleapis.com/%s/%s",bucket.getName(),fileName);
     }
 }
 

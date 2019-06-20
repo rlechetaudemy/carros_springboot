@@ -1,4 +1,4 @@
-package com.carros.api;
+package com.carros.api.carros;
 
 import com.carros.domain.Carro;
 import com.carros.domain.CarroService;
@@ -54,7 +54,7 @@ public class CarrosController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity put(@PathVariable("id") Long id,@RequestBody Carro carro) {
+    public ResponseEntity put(@PathVariable("id") Long id, @RequestBody Carro carro) {
 
         carro.setId(id);
 
