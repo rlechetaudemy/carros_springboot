@@ -30,9 +30,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // Removi segurança para subir o servidor.
         http
                 .authorizeRequests()
-                .anyRequest().authenticated()
-                .and().httpBasic()
+                .anyRequest().permitAll()
                 .and().csrf().disable();
+
+//        http
+//                .authorizeRequests()
+//                .anyRequest().authenticated()
+//                .and().httpBasic()
+//                .and().csrf().disable();
     }
 
     @Override
