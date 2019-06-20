@@ -27,6 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
+        // Removi segurança para subir o servidor.
         http
                 .authorizeRequests()
                 .anyRequest().authenticated()
