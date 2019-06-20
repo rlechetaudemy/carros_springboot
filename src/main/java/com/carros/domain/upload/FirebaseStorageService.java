@@ -2,16 +2,15 @@ package com.carros.domain.upload;
 
 import com.carros.api.upload.UploadInput;
 import com.google.auth.oauth2.GoogleCredentials;
-import com.google.cloud.storage.*;
+import com.google.cloud.storage.Acl;
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.Bucket;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.StorageClient;
-import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -54,7 +53,7 @@ public class FirebaseStorageService {
         Blob blob = bucket.create(fileName,bytes, uploadInput.getMimeType());
 
         // Assina URL válida por N dias
-        //URL signedUrl = blob.signUrl(1, TimeUnit.DAYS);
+//        URL signedUrl = blob.signUrl(3, TimeUnit.DAYS);
 
         // Deixa URL pública
         blob.createAcl(Acl.of(Acl.User.ofAllUsers(), Acl.Role.READER));

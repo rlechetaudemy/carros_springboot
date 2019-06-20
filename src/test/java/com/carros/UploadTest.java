@@ -46,7 +46,7 @@ public class UploadTest {
         String url = service.upload(getUploadInput());
 
         // Faz o Get na URL
-        ResponseEntity<String> urlResponse = basicAuth().getForEntity(url, String.class);
+        ResponseEntity<String> urlResponse = rest.getForEntity(url, String.class);
         System.out.println(urlResponse);
         assertEquals(HttpStatus.OK, urlResponse.getStatusCode());
     }
@@ -65,12 +65,12 @@ public class UploadTest {
 
         UploadOutput out = response.getBody();
         assertNotNull(out);
-        System.out.println(out);
 
         String url = out.getUrl();
+        System.out.println(url);
 
         // Faz o Get na URL
-        ResponseEntity<String> urlResponse = basicAuth().getForEntity(url, String.class);
+        ResponseEntity<String> urlResponse = rest.getForEntity(url, String.class);
         System.out.println(urlResponse);
         assertEquals(HttpStatus.OK, urlResponse.getStatusCode());
     }
