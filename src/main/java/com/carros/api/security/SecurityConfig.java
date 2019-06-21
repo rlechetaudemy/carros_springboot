@@ -27,12 +27,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
+        // Removi segurança para subir o servidor.
         http
                 .authorizeRequests()
-                .antMatchers("/swagger-ui.html", "/swagger*/**").permitAll()
-                .anyRequest().authenticated()
-                .and().httpBasic()
+                .anyRequest().permitAll()
                 .and().csrf().disable();
+
+//        http
+//                .authorizeRequests()
+//                .anyRequest().authenticated()
+//                .and().httpBasic()
+//                .and().csrf().disable();
     }
 
     @Override
