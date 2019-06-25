@@ -1,0 +1,144 @@
+{
+	"info": {
+		"_postman_id": "27691640-0b4e-4a9e-b3e7-7a121edf9007",
+		"name": "Carros JWT",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Carros JWT Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"admin\",\n\t\"password\": \"123\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Carros Get JWT",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU2MjM0OTU4NSwicm9sIjpbIlJPTEVfQURNSU4iXX0.lNl5wI2BQlHSENALii012DqOfrek9QUJWt6jHvAv8ztE07xeR1BngKyp4-RH0pWv3L1hoqVoOhtJRANhldPwiQ",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/carros",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"carros"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Carros Get JWT UserInfo",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU2MjM0OTU4NSwicm9sIjpbIlJPTEVfQURNSU4iXX0.lNl5wI2BQlHSENALii012DqOfrek9QUJWt6jHvAv8ztE07xeR1BngKyp4-RH0pWv3L1hoqVoOhtJRANhldPwiQ"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/userInfo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"userInfo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Carros POST  JWT",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU2MjM0OTU4NSwicm9sIjpbIlJPTEVfQURNSU4iXX0.lNl5wI2BQlHSENALii012DqOfrek9QUJWt6jHvAv8ztE07xeR1BngKyp4-RH0pWv3L1hoqVoOhtJRANhldPwiQ",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"nome\": \"teste\",\n        \"tipo\": \"classicos\"\n    }"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/carros",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"carros"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

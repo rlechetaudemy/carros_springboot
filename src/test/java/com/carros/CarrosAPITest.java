@@ -28,13 +28,17 @@ public class CarrosAPITest {
     @Autowired
     private CarroService service;
 
+    private TestRestTemplate basicAuth() {
+        return rest.withBasicAuth("admin","123");
+    }
+
     private ResponseEntity<CarroDTO> getCarro(String url) {
         return
-                rest.withBasicAuth("user","123").getForEntity(url, CarroDTO.class);
+                basicAuth().getForEntity(url, CarroDTO.class);
     }
 
     private ResponseEntity<List<CarroDTO>> getCarros(String url) {
-        return rest.withBasicAuth("user","123").exchange(
+        return basicAuth().exchange(
                 url,
                 HttpMethod.GET,
                 null,
@@ -66,7 +70,7 @@ public class CarrosAPITest {
         assertEquals("esportivos", c.getTipo());
 
         // Deletar o objeto
-        rest.withBasicAuth("user","123").delete(location);
+        basicAuth().delete(location);
 
         // Verificar se deletou
         assertEquals(HttpStatus.NOT_FOUND, getCarro(location).getStatusCode());
