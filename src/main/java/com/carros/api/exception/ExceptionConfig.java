@@ -29,17 +29,10 @@ public class ExceptionConfig extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler({
-            AccessDeniedException.class
+        AccessDeniedException.class,
+        AuthorizationException.class
     })
     public ResponseEntity accessDenied() {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new MsgError("Acesso negado"));
     }
-
-//    @ExceptionHandler({
-//            BadCredentialsException.class,
-//            AuthorizationException.class
-//    })
-//    public ResponseEntity badCredentialsException() {
-//        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new Error("Credenciais incorretas."));
-//    }
 }

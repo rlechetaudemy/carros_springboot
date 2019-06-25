@@ -1,6 +1,6 @@
 package com.carros;
 
-import com.carros.api.security.jwt.JwtHelper;
+import com.carros.api.security.jwt.JwtUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,20 +30,20 @@ public class TokenJwtTest {
         assertNotNull(user);
 
         // Gera token
-        String jwtToken = JwtHelper.createToken(user);
+        String jwtToken = JwtUtil.createToken(user);
         System.out.println(jwtToken);
         assertNotNull(jwtToken);
 
         // Valida Token
-        boolean ok = JwtHelper.isTokenValid(jwtToken);
+        boolean ok = JwtUtil.isTokenValid(jwtToken);
         assertTrue(ok);
 
         // Valida login
-        String login = JwtHelper.getLogin(jwtToken);
+        String login = JwtUtil.getLogin(jwtToken);
         assertEquals("admin",login);
 
         // Valida roles
-        List<GrantedAuthority> roles = JwtHelper.getRoles(jwtToken);
+        List<GrantedAuthority> roles = JwtUtil.getRoles(jwtToken);
         assertNotNull(roles);
         System.out.println(roles);
         String role = roles.get(0).getAuthority();

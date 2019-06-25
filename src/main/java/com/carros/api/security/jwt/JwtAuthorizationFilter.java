@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -38,17 +37,17 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             return;
         }
 
-        if(! JwtHelper.isTokenValid(token)) {
-            throw new AuthorizationException("Acesso negado.");
-        }
-
         try {
 
-            String login = JwtHelper.getLogin(token);
+            if(! JwtUtil.isTokenValid(token)) {
+                throw new AuthorizationException("Acesso negado.");
+            }
+
+            String login = JwtUtil.getLogin(token);
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(login);
 
-            List<GrantedAuthority> authorities = JwtHelper.getRoles(token);
+            List<GrantedAuthority> authorities = JwtUtil.getRoles(token);
 
             //var authorities = ((UserDetails) userDetails).getAuthorities();
 
@@ -58,8 +57,8 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             SecurityContextHolder.getContext().setAuthentication(auth);
             filterChain.doFilter(request, response);
 
-        } catch (AuthenticationException ex) {
-            throw new ServletException("Authentication error.");
+        } catch (Exception ex) {
+            throw new AuthorizationException("Authentication error.");
         }
     }
 }

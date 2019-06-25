@@ -1,15 +1,19 @@
 package com.carros.api.security.jwt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,13 +21,13 @@ import java.util.stream.Collectors;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-public class JwtHelper {
+public class JwtUtil {
     // Signing key for HS512 algorithm
     // You can use the page http://www.allkeysgenerator.com/ to generate all kinds of keys
     private static final String JWT_SECRET = "n2r5u8x/A%D*G-KaPdSgVkYp3s6v9y$B&E(H+MbQeThWmZq4t7w!z%C*F-J@NcRf";
 
     public static Claims getClaims(String token) {
-        byte[] signingKey = JwtHelper.JWT_SECRET.getBytes();
+        byte[] signingKey = JwtUtil.JWT_SECRET.getBytes();
 
         token = token.replace("Bearer ", "");
 
@@ -68,7 +72,7 @@ public class JwtHelper {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        byte[] signingKey = JwtHelper.JWT_SECRET.getBytes();
+        byte[] signingKey = JwtUtil.JWT_SECRET.getBytes();
 
         return Jwts.builder()
                 .signWith(Keys.hmacShaKeyFor(signingKey), SignatureAlgorithm.HS512)
