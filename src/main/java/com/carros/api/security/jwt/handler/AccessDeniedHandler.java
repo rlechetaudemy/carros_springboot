@@ -1,18 +1,21 @@
-package com.carros.api.security.jwt;
+package com.carros.api.security.jwt.handler;
 
-import com.carros.api.exception.MsgError;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.carros.api.security.jwt.ServletUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class AccessDeniedConfig implements AccessDeniedHandler {
+/**
+ * Classe chamada quando acontece o erro 403 - FORBIDDEN
+ */
+@Component
+public class AccessDeniedHandler implements org.springframework.security.web.access.AccessDeniedHandler {
 
     @Override
     public void handle(
@@ -24,12 +27,9 @@ public class AccessDeniedConfig implements AccessDeniedHandler {
                 = SecurityContextHolder.getContext().getAuthentication();
 
         if (auth != null) {
-            response.setStatus(HttpStatus.FORBIDDEN.value());
-            response.setCharacterEncoding("UTF-8");
-            response.setContentType("application/json");
 
-            String json = new ObjectMapper().writeValueAsString(new MsgError("Acesso negado"));
-            response.getWriter().write(json);
+            String json = ServletUtil.getJson("error", "Acesso negado - handler");
+            ServletUtil.write(response, HttpStatus.FORBIDDEN, json);
         }
     }
 }

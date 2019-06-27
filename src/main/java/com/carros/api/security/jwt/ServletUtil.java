@@ -19,12 +19,6 @@ public class ServletUtil {
         response.getWriter().write(json);
     }
 
-    public static void write(HttpServletResponse response, HttpStatus status, Object object) throws IOException {
-
-        String json = new ObjectMapper().writeValueAsString(object);
-        write(response, status, json);
-    }
-
     public static String getJson(String key, String value) {
         JsonObject json = new JsonObject();
         json.addProperty(key, value);

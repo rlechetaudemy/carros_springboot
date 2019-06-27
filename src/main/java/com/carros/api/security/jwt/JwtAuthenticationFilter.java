@@ -2,11 +2,13 @@ package com.carros.api.security.jwt;
 
 import com.carros.api.exception.MsgError;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -39,11 +41,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             String username = login.getUsername();
             String password = login.getPassword();
 
+            if(StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
+                throw new BadCredentialsException("Invalid username/password.");
+            }
+
             Authentication auth = new UsernamePasswordAuthenticationToken(username, password);
 
             return authenticationManager.authenticate(auth);
         } catch (IOException e) {
-            throw new BadCredentialsException("Authentication error");
+            throw new BadCredentialsException(e.getMessage());
         }
     }
 
@@ -59,10 +65,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, org.springframework.security.core.AuthenticationException failed) throws IOException, ServletException {
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException error) throws IOException, ServletException {
 
         String json = ServletUtil.getJson("error", "Login incorreto");
-        ServletUtil.write(response, HttpStatus.FORBIDDEN, json);
+        ServletUtil.write(response, HttpStatus.UNAUTHORIZED, json);
     }
 
 

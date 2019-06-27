@@ -1,6 +1,10 @@
 package com.carros.api.security.jwt;
 
+import com.carros.api.security.jwt.handler.UnauthorizedHandler;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,6 +22,8 @@ import java.io.IOException;
 import java.util.List;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
+    private static Logger logger = LoggerFactory.getLogger(JwtAuthorizationFilter.class);
+
     private UserDetailsService userDetailsService;
 
     public JwtAuthorizationFilter(AuthenticationManager authenticationManager,UserDetailsService userDetailsService) {
@@ -40,7 +46,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         try {
 
             if(! JwtUtil.isTokenValid(token)) {
-                throw new AuthorizationException("Acesso negado.");
+                throw new AccessDeniedException("Acesso negado.");
             }
 
             String login = JwtUtil.getLogin(token);
@@ -57,8 +63,10 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             SecurityContextHolder.getContext().setAuthentication(auth);
             filterChain.doFilter(request, response);
 
-        } catch (Exception ex) {
-            throw new AuthorizationException("Authentication error.");
+        } catch (RuntimeException ex) {
+            logger.error("Authentication error: " + ex.getMessage(),ex);
+
+            throw ex;
         }
     }
 }

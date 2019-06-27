@@ -1,9 +1,9 @@
 package com.carros.api.security;
 
-import com.carros.api.security.jwt.AccessDeniedConfig;
 import com.carros.api.security.jwt.JwtAuthenticationFilter;
 import com.carros.api.security.jwt.JwtAuthorizationFilter;
-import com.carros.api.security.jwt.UnauthorizedHandler;
+import com.carros.api.security.jwt.handler.AccessDeniedHandler;
+import com.carros.api.security.jwt.handler.UnauthorizedHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +17,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.access.AccessDeniedHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -31,6 +30,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UnauthorizedHandler unauthorizedHandler;
 
+    @Autowired
+    private AccessDeniedHandler accessDeniedHandler;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         AuthenticationManager authManager = authenticationManager();
@@ -42,14 +44,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .addFilter(new JwtAuthenticationFilter(authManager))
             .addFilter(new JwtAuthorizationFilter(authManager, userDetailsService))
                 .exceptionHandling()
+                .accessDeniedHandler(accessDeniedHandler)
                 .authenticationEntryPoint(unauthorizedHandler)
             .and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-    }
-
-    @Bean
-    AccessDeniedHandler accessDeniedHandler() {
-        return new AccessDeniedConfig();
     }
 
     @Override
