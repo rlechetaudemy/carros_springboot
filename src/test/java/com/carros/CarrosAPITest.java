@@ -1,23 +1,29 @@
 package com.carros;
 
+import com.carros.api.security.jwt.JwtUtil;
 import com.carros.domain.Carro;
-import com.carros.domain.CarroService;
 import com.carros.domain.dto.CarroDTO;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.DELETE;
+import static org.springframework.http.HttpMethod.POST;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CarrosApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -26,22 +32,56 @@ public class CarrosAPITest {
     protected TestRestTemplate rest;
 
     @Autowired
-    private CarroService service;
+    @Qualifier("userDetailsService")
+    private UserDetailsService userDetailsService;
 
-    private TestRestTemplate basicAuth() {
-        return rest.withBasicAuth("admin","123");
+    private String jwtToken = "";
+
+    @Before
+    public void setupTest() {
+        // Le usuário
+        UserDetails user = userDetailsService.loadUserByUsername("admin");
+        assertNotNull(user);
+
+        // Gera token
+        jwtToken = JwtUtil.createToken(user);
+        System.out.println(jwtToken);
+        assertNotNull(jwtToken);
+    }
+
+    private <T> ResponseEntity<T> post(String url, Object body, Class<T> responseType) {
+        HttpHeaders headers = getHeaders();
+
+        return rest.exchange(url, POST, new HttpEntity<>(body, headers), responseType);
+    }
+
+    private HttpHeaders getHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken);
+        return headers;
     }
 
     private ResponseEntity<CarroDTO> getCarro(String url) {
-        return
-                basicAuth().getForEntity(url, CarroDTO.class);
+
+        HttpHeaders headers = getHeaders();
+
+        return rest.exchange(url, GET, new HttpEntity<>(headers), CarroDTO.class);
+    }
+
+    private ResponseEntity delete(String url) {
+
+        HttpHeaders headers = getHeaders();
+
+        return rest.exchange(url, DELETE, new HttpEntity<>(headers), CarroDTO.class);
     }
 
     private ResponseEntity<List<CarroDTO>> getCarros(String url) {
-        return basicAuth().exchange(
+        HttpHeaders headers = getHeaders();
+
+        return rest.exchange(
                 url,
                 HttpMethod.GET,
-                null,
+                new HttpEntity<>(headers),
                 new ParameterizedTypeReference<List<CarroDTO>>() {
                 });
     }
@@ -55,7 +95,7 @@ public class CarrosAPITest {
         carro.setTipo("esportivos");
 
         // Insert
-        ResponseEntity response = rest.withBasicAuth("admin","123").postForEntity("/api/v1/carros", carro, null);
+        ResponseEntity response = post("/api/v1/carros", carro, null);
         System.out.println(response);
 
         // Verifica se criou
@@ -70,7 +110,7 @@ public class CarrosAPITest {
         assertEquals("esportivos", c.getTipo());
 
         // Deletar o objeto
-        basicAuth().delete(location);
+        delete(location);
 
         // Verificar se deletou
         assertEquals(HttpStatus.NOT_FOUND, getCarro(location).getStatusCode());
