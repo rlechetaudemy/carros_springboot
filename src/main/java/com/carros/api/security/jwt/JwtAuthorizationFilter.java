@@ -64,11 +64,6 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             SecurityContextHolder.getContext().setAuthentication(auth);
             filterChain.doFilter(request, response);
 
-        } catch (ExpiredJwtException ex) {
-            // Retorna json customizado para Token expirado
-            String json = ServletUtil.getJson("error", "Token expirado");
-            ServletUtil.write(response, HttpStatus.UNAUTHORIZED,json);
-            filterChain.doFilter(request, response);
         } catch (RuntimeException ex) {
             logger.error("Authentication error: " + ex.getMessage(),ex);
 
