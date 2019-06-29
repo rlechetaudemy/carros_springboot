@@ -1,6 +1,5 @@
 package com.carros.api.security.jwt;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

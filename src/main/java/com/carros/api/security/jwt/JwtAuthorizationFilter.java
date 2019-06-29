@@ -1,6 +1,5 @@
 package com.carros.api.security.jwt;
 
-import com.carros.api.security.jwt.handler.UnauthorizedHandler;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

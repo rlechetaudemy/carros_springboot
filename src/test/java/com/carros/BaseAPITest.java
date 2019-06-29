@@ -2,7 +2,6 @@ package com.carros;
 
 import com.carros.api.security.jwt.JwtUtil;
 import org.junit.Before;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,7 +11,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import static junit.framework.TestCase.assertNotNull;
 import static org.springframework.http.HttpMethod.*;
