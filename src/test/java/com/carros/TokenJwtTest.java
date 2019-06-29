@@ -1,7 +1,6 @@
 package com.carros;
 
 import com.carros.api.security.jwt.JwtUtil;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

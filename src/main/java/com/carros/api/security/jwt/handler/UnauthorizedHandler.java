@@ -1,6 +1,7 @@
 package com.carros.api.security.jwt.handler;
 
 import com.carros.api.security.jwt.ServletUtil;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ public class UnauthorizedHandler implements AuthenticationEntryPoint {
         logger.warn("UnauthorizedHandler, exception: " + authException);
 
         // Chamado se token errado ou ausente
-        String json = ServletUtil.getJson("error", "Não autorizado - handler");
+        String json = ServletUtil.getJson("error", "Não autorizado.");
         ServletUtil.write(response, HttpStatus.FORBIDDEN, json);
     }
 }

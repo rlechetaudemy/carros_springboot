@@ -1,9 +1,11 @@
 package com.carros.api.security.jwt;
 
 import com.carros.api.security.jwt.handler.UnauthorizedHandler;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -63,6 +65,11 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             SecurityContextHolder.getContext().setAuthentication(auth);
             filterChain.doFilter(request, response);
 
+        } catch (ExpiredJwtException ex) {
+            // Retorna json customizado para Token expirado
+            String json = ServletUtil.getJson("error", "Token expirado");
+            ServletUtil.write(response, HttpStatus.UNAUTHORIZED,json);
+            filterChain.doFilter(request, response);
         } catch (RuntimeException ex) {
             logger.error("Authentication error: " + ex.getMessage(),ex);
 
