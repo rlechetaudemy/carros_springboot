@@ -27,52 +27,10 @@ import static org.springframework.http.HttpMethod.POST;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CarrosApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class CarrosAPITest {
-    @Autowired
-    protected TestRestTemplate rest;
-
-    @Autowired
-    @Qualifier("userDetailsService")
-    private UserDetailsService userDetailsService;
-
-    private String jwtToken = "";
-
-    @Before
-    public void setupTest() {
-        // Le usuário
-        UserDetails user = userDetailsService.loadUserByUsername("admin");
-        assertNotNull(user);
-
-        // Gera token
-        jwtToken = JwtUtil.createToken(user);
-        System.out.println(jwtToken);
-        assertNotNull(jwtToken);
-    }
-
-    private <T> ResponseEntity<T> post(String url, Object body, Class<T> responseType) {
-        HttpHeaders headers = getHeaders();
-
-        return rest.exchange(url, POST, new HttpEntity<>(body, headers), responseType);
-    }
-
-    private HttpHeaders getHeaders() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken);
-        return headers;
-    }
+public class CarrosAPITest extends BaseAPITest {
 
     private ResponseEntity<CarroDTO> getCarro(String url) {
-
-        HttpHeaders headers = getHeaders();
-
-        return rest.exchange(url, GET, new HttpEntity<>(headers), CarroDTO.class);
-    }
-
-    private ResponseEntity delete(String url) {
-
-        HttpHeaders headers = getHeaders();
-
-        return rest.exchange(url, DELETE, new HttpEntity<>(headers), CarroDTO.class);
+        return get(url, CarroDTO.class);
     }
 
     private ResponseEntity<List<CarroDTO>> getCarros(String url) {
@@ -85,7 +43,6 @@ public class CarrosAPITest {
                 new ParameterizedTypeReference<List<CarroDTO>>() {
                 });
     }
-
 
     @Test
     public void testSave() {
@@ -110,7 +67,7 @@ public class CarrosAPITest {
         assertEquals("esportivos", c.getTipo());
 
         // Deletar o objeto
-        delete(location);
+        delete(location, null);
 
         // Verificar se deletou
         assertEquals(HttpStatus.NOT_FOUND, getCarro(location).getStatusCode());
@@ -140,6 +97,7 @@ public class CarrosAPITest {
         assertEquals(response.getStatusCode(), HttpStatus.OK);
 
         CarroDTO c = response.getBody();
+        assertNotNull(c);
         assertEquals("Ferrari FF", c.getNome());
     }
 

@@ -9,6 +9,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -18,19 +20,16 @@ import java.net.URL;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
+import static org.springframework.http.HttpMethod.POST;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CarrosApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class UploadTest {
+public class UploadTest extends BaseAPITest {
     @Autowired
     protected TestRestTemplate rest;
 
     @Autowired
     private FirebaseStorageService service;
-
-    private TestRestTemplate basicAuth() {
-        return rest.withBasicAuth("admin","123");
-    }
 
     private UploadInput getUploadInput() {
         UploadInput upload = new UploadInput();
@@ -57,7 +56,7 @@ public class UploadTest {
         UploadInput upload = getUploadInput();
 
         // Insert
-        ResponseEntity<UploadOutput> response = basicAuth().postForEntity("/api/v1/upload", upload, UploadOutput.class);
+        ResponseEntity<UploadOutput> response = post("/api/v1/upload", upload, UploadOutput.class);
         System.out.println(response);
 
         // Verifica se criou
