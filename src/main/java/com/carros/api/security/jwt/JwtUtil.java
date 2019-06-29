@@ -18,8 +18,8 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 public class JwtUtil {
-    // Signing key for HS512 algorithm
-    // You can use the page http://www.allkeysgenerator.com/ to generate all kinds of keys
+    // Chave com algoritmo HS512
+    // http://www.allkeysgenerator.com
     private static final String JWT_SECRET = "n2r5u8x/A%D*G-KaPdSgVkYp3s6v9y$B&E(H+MbQeThWmZq4t7w!z%C*F-J@NcRf";
 
     public static Claims getClaims(String token) {

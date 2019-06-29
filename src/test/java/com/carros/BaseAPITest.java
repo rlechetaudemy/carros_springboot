@@ -26,6 +26,12 @@ public abstract class BaseAPITest {
 
     private String jwtToken = "";
 
+    HttpHeaders getHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken);
+        return headers;
+    }
+
     @Before
     public void setupTest() {
         // Le usuário
@@ -42,12 +48,6 @@ public abstract class BaseAPITest {
         HttpHeaders headers = getHeaders();
 
         return rest.exchange(url, POST, new HttpEntity<>(body, headers), responseType);
-    }
-
-    HttpHeaders getHeaders() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken);
-        return headers;
     }
 
     <T> ResponseEntity<T> get(String url, Class<T> responseType) {
