@@ -1,7 +1,7 @@
-package com.carros.api.security.jwt;
+package com.carros.api.infra.security.jwt;
 
-import com.carros.domain.User;
-import com.carros.domain.dto.UserDTO;
+import com.carros.api.users.User;
+import com.carros.api.users.UserDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;

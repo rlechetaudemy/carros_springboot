@@ -1,6 +1,6 @@
 package com.carros;
 
-import com.carros.api.security.jwt.JwtUtil;
+import com.carros.api.infra.security.jwt.JwtUtil;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

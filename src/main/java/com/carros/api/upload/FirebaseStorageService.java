@@ -1,6 +1,5 @@
-package com.carros.domain.upload;
+package com.carros.api.upload;
 
-import com.carros.api.upload.UploadInput;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.Acl;
 import com.google.cloud.storage.Blob;

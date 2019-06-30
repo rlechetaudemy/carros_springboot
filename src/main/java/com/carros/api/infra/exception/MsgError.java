@@ -1,4 +1,4 @@
-package com.carros.api.exception;
+package com.carros.api.infra.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

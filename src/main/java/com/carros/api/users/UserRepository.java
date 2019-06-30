@@ -1,4 +1,4 @@
-package com.carros.domain;
+package com.carros.api.users;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

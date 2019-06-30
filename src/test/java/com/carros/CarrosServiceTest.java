@@ -1,9 +1,9 @@
 package com.carros;
 
-import com.carros.api.exception.ObjectNotFoundException;
-import com.carros.domain.Carro;
-import com.carros.domain.CarroService;
-import com.carros.domain.dto.CarroDTO;
+import com.carros.api.infra.exception.ObjectNotFoundException;
+import com.carros.api.carros.Carro;
+import com.carros.api.carros.CarroService;
+import com.carros.api.carros.CarroDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

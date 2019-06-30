@@ -1,9 +1,9 @@
-package com.carros.api.security;
+package com.carros.api.infra.security;
 
-import com.carros.api.security.jwt.JwtAuthenticationFilter;
-import com.carros.api.security.jwt.JwtAuthorizationFilter;
-import com.carros.api.security.jwt.handler.AccessDeniedHandler;
-import com.carros.api.security.jwt.handler.UnauthorizedHandler;
+import com.carros.api.infra.security.jwt.JwtAuthenticationFilter;
+import com.carros.api.infra.security.jwt.JwtAuthorizationFilter;
+import com.carros.api.infra.security.jwt.handler.AccessDeniedHandler;
+import com.carros.api.infra.security.jwt.handler.UnauthorizedHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;

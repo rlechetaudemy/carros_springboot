@@ -1,4 +1,4 @@
-package com.carros.api.security.jwt;
+package com.carros.api.infra.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

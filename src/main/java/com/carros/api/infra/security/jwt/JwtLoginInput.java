@@ -1,9 +1,9 @@
-package com.carros.api.security.jwt;
+package com.carros.api.infra.security.jwt;
 
 import lombok.Data;
 
 @Data
-class JwtLoginInput {
+public class JwtLoginInput {
     private String username;
     private String password;
 }
