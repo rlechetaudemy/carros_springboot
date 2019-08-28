@@ -1,6 +1,7 @@
 package com.carros.api.carros;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +17,9 @@ public class CarrosController {
     private CarroService service;
 
     @GetMapping()
-    public ResponseEntity get() {
-        List<CarroDTO> carros = service.getCarros();
+    public ResponseEntity get(@RequestParam(value = "page", defaultValue = "0") Integer page,
+                              @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        List<CarroDTO> carros = service.getCarros(PageRequest.of(page, size));
         return ResponseEntity.ok(carros);
     }
 

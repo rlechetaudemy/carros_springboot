@@ -66,6 +66,10 @@ public class CarrosAPITest extends BaseAPITest {
     public void testLista() {
         List<CarroDTO> carros = getCarros("/api/v1/carros").getBody();
         assertNotNull(carros);
+        assertEquals(10, carros.size());
+
+        carros = getCarros("/api/v1/carros?page=0&size=30").getBody();
+        assertNotNull(carros);
         assertEquals(30, carros.size());
     }
 
