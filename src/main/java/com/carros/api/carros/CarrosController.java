@@ -31,8 +31,10 @@ public class CarrosController {
     }
 
     @GetMapping("/tipo/{tipo}")
-    public ResponseEntity getCarrosByTipo(@PathVariable("tipo") String tipo) {
-        List<CarroDTO> carros = service.getCarrosByTipo(tipo);
+    public ResponseEntity getCarrosByTipo(@PathVariable("tipo") String tipo,
+                                          @RequestParam(value = "page", defaultValue = "0") Integer page,
+                                          @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        List<CarroDTO> carros = service.getCarrosByTipo(tipo, PageRequest.of(page, size));
         return carros.isEmpty() ?
                 ResponseEntity.noContent().build() :
                 ResponseEntity.ok(carros);

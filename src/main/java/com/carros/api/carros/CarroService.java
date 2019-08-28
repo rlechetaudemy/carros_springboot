@@ -26,8 +26,8 @@ public class CarroService {
         return carro.map(CarroDTO::create).orElseThrow(() -> new ObjectNotFoundException("Carro não encontrado"));
     }
 
-    public List<CarroDTO> getCarrosByTipo(String tipo) {
-        return rep.findByTipo(tipo).stream().map(CarroDTO::create).collect(Collectors.toList());
+    public List<CarroDTO> getCarrosByTipo(String tipo, Pageable pageable) {
+        return rep.findByTipo(tipo, pageable).stream().map(CarroDTO::create).collect(Collectors.toList());
     }
 
     public CarroDTO insert(Carro carro) {
