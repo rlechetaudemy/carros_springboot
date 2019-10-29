@@ -23,7 +23,7 @@ public class CorsConfig extends CorsFilter {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 CorsRegistration cors = registry.addMapping("/**");
-                cors.allowedMethods("GET", "PUT", "POST", "GET", "DELETE", "OPTIONS");
+                cors.allowedMethods("GET", "PUT", "POST", "DELETE", "OPTIONS");
                 cors.allowedOrigins("*");
                 cors.allowedHeaders("*");
             }
