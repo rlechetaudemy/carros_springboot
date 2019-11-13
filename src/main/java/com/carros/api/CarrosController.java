@@ -42,9 +42,7 @@ public class CarrosController {
     @PostMapping
     public String post(@RequestBody Carro carro) {
 
-        carro.setId(null);
-
-        Carro c = service.save(carro);
+        Carro c = service.insert(carro);
 
         return "Carro salvo com sucesso: " + c.getId();
     }
@@ -52,9 +50,7 @@ public class CarrosController {
     @PutMapping("/{id}")
     public String put(@PathVariable("id") Long id,@RequestBody Carro carro) {
 
-        carro.setId(id);
-
-        Carro c = service.save(carro);
+        Carro c = service.update(carro, id);
 
         return "Carro atualizado com sucesso: " + c.getId();
     }
