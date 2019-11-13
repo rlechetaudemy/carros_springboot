@@ -46,10 +46,9 @@ public class CarroService {
             // Atualiza o carro
             rep.save(db);
 
-            return CarroDTO.create(db);
+            return db;
         } else {
-            return null;
-            //throw new RuntimeException("Não foi possível atualizar o registro");
+            throw new RuntimeException("Não foi possível atualizar o registro");
         }
     }
 
