@@ -36,10 +36,9 @@ public class CarroServiceTest {
         assertNotNull(id);
 
         // Buscar o objeto
-        Optional<CarroDTO> op = service.getCarroById(id);
-        assertTrue(op.isPresent());
+        c = service.getCarroById(id);
+        assertNotNull(c);
 
-        c = op.get();
         assertEquals("Porshe",c.getNome());
         assertEquals("esportivos",c.getTipo());
 
@@ -47,7 +46,7 @@ public class CarroServiceTest {
         service.delete(id);
 
         // Verificar se deletou
-        assertFalse(service.getCarroById(id).isPresent());
+        assertNull(service.getCarroById(id));
     }
 
     @Test
@@ -71,9 +70,9 @@ public class CarroServiceTest {
     @Test
     public void testGet() {
 
-        Optional<CarroDTO> op = service.getCarroById(11L);
+        CarroDTO c = service.getCarroById(11L);
 
-        assertTrue(op.isPresent());
+        assertNotNull(c);
 
         CarroDTO c = op.get();
 
