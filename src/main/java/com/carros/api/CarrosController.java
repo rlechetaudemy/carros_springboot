@@ -45,11 +45,10 @@ public class CarrosController {
     public ResponseEntity post(@RequestBody Carro carro) {
 
         try {
-            CarroDTO c = service.save(carro);
+            CarroDTO c = service.insert(carro);
 
-            return c != null ?
-                    ResponseEntity.created(getUri(c)).build() :
-                    ResponseEntity.badRequest().build();
+            URI location = getUri(c);
+            return ResponseEntity.created(location).build();
 
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
@@ -68,7 +67,7 @@ public class CarrosController {
         CarroDTO c = service.update(carro, id);
 
         return c != null ?
-                ResponseEntity.ok().build() :
+                ResponseEntity.ok(c) :
                 ResponseEntity.notFound().build();
     }
 
