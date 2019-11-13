@@ -5,7 +5,6 @@ import com.carros.domain.CarroService;
 import com.carros.domain.dto.CarroDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -27,9 +26,11 @@ public class CarrosController {
 
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable("id") Long id) {
-        CarroDTO c = service.getCarroById(id);
+        Optional<CarroDTO> carro = service.getCarroById(id);
 
-        return ResponseEntity.ok(c);
+        return carro
+                .map(c -> ResponseEntity.ok(carro))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/tipo/{tipo}")
@@ -43,10 +44,16 @@ public class CarrosController {
     @PostMapping
     public ResponseEntity post(@RequestBody Carro carro) {
 
-        CarroDTO c = service.insert(carro);
+        try {
+            CarroDTO c = service.insert(carro);
 
-        URI location = getUri(c.getId());
-        return ResponseEntity.created(location).build();
+            URI location = getUri(c.getId());
+            return ResponseEntity.created(location).build();
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+
     }
 
     private URI getUri(Long id) {
@@ -55,9 +62,7 @@ public class CarrosController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity put(@PathVariable("id") Long id,@RequestBody Carro carro) {
-
-        carro.setId(id);
+    public ResponseEntity put(@PathVariable("id") Long id, @RequestBody Carro carro) {
 
         CarroDTO c = service.update(carro, id);
 
@@ -68,8 +73,9 @@ public class CarrosController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable("id") Long id) {
-        service.delete(id);
 
-        return ResponseEntity.ok().build();
+        return service.delete(id) ?
+                ResponseEntity.ok().build() :
+                ResponseEntity.notFound().build();
     }
 }
