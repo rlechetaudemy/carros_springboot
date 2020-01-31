@@ -25,13 +25,19 @@ public class FirebaseStorageService {
 
             System.out.println(in);
 
-            FirebaseOptions options = new FirebaseOptions.Builder()
-                    .setCredentials(GoogleCredentials.fromStream(in))
-                    .setStorageBucket("carros-3a13e.appspot.com")
-                    .setDatabaseUrl("https://carros-3a13e.firebaseio.com")
-                    .build();
+            System.out.println(in);
 
-            FirebaseApp.initializeApp(options);
+            if(in != null) {
+                FirebaseOptions options = new FirebaseOptions.Builder()
+                        .setCredentials(GoogleCredentials.fromStream(in))
+                        .setStorageBucket("seu-projeto.appspot.com")
+                        .setDatabaseUrl("https://seu-projeto.firebaseio.com")
+                        .build();
+
+                FirebaseApp.initializeApp(options);
+            } else {
+                System.err.println("Configure o arquivo serviceAccountKey.json do Firebase NOT FOUND!");
+            }
         }
     }
 
