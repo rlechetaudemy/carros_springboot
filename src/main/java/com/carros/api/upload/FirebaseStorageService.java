@@ -21,7 +21,7 @@ public class FirebaseStorageService {
 
         if (FirebaseApp.getApps().isEmpty()) {
             InputStream in =
-                    FirebaseStorageService.class.getResourceAsStream("/serviceAccountKey.json");
+                    FirebaseStorageService.class.getResourceAsStream("/firebase.json");
 
             System.out.println(in);
 
@@ -36,7 +36,7 @@ public class FirebaseStorageService {
 
                 FirebaseApp.initializeApp(options);
             } else {
-                System.err.println("Configure o arquivo serviceAccountKey.json do Firebase NOT FOUND!");
+                System.err.println("Configure o arquivo firebase.json do Firebase NOT FOUND!");
             }
         }
     }
