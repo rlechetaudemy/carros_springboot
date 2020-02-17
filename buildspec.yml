@@ -11,7 +11,7 @@ phases:
   post_build:
     commands:
       - echo Build completed on `date`
-      - mvn package
+      - mvn install -Dskip.tests
 artifacts:
   files:
     - target/carros-0.0.1-SNAPSHOT.jar
