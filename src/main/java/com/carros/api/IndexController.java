@@ -12,7 +12,7 @@ public class IndexController {
 
     @GetMapping()
     public String get() {
-        return "API dos Carros - Hello";
+        return "API dos Carros - Code Commit";
     }
 
     @GetMapping("/userInfo")
