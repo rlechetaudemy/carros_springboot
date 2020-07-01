@@ -1,0 +1,17 @@
+version: '2'
+services:
+  db:
+    image: mysql:5.7.30
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ricardo123
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mysql_data/:/var/lib/mysql
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8000:8080  

@@ -27,3 +27,10 @@ HELP.md
 
 ### VS Code ###
 .vscode/
+
+## MySQL Stuff ##
+#exclude everything
+mysql_data/*
+
+# mysql folder rule exception
+!mysql_data/.gitkeep
